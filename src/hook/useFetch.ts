@@ -1,13 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
-interface Product {
-  id: number;
-  title: string;
-  description: string;
-  price: number;
-  image: string;
-}
+import { Product } from '../interfaces/Product';
 
 const useFetch = () => {
   const [data, setData] = useState<Product[]>([]);
@@ -26,7 +19,6 @@ const useFetch = () => {
         setLoading(false); 
       }
     };
-
     fetchData(); 
   }, []); 
 

@@ -1,13 +1,14 @@
 import React from "react";
 import MuiButton from "@mui/material/Button";
-
+import { SxProps, Theme } from "@mui/system";
 interface ButtonProps {
   text: string;
-  variant?: "primary" | "secondary" | "danger";
+  variant?: "primary" | "secondary" | "danger" | "contained" | "outlined";
   onClick?: () => void;
   isDisabled?: boolean;
   size?: "small" | "medium" | "large";
-  color?: "inherit";
+  color?: "inherit" | "primary";
+  sx?: SxProps<Theme>;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -17,12 +18,14 @@ const Button: React.FC<ButtonProps> = ({
   isDisabled = false,
   size = "medium",
   color,
+  sx,
 }) => {
   return (
     <MuiButton
       className={`btn ${variant} ${size} ${color}`}
       onClick={onClick}
       disabled={isDisabled}
+      sx={sx}
     >
       {text}
     </MuiButton>

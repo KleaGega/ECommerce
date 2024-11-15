@@ -18,6 +18,7 @@ import Modal from "./Modal";
 import FormControl from "@mui/material/FormControl";
 import Input from "@mui/material/Input";
 import InputLabel from "@mui/material/InputLabel";
+import ThemeContext from "../../context/ThemeContext";
 
 const drawerWidth = 240;
 
@@ -38,39 +39,58 @@ export default function Sidebar() {
     handlePriceFilterChange,
   } = cartContext;
 
+  const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    return <div>Error: ThemeContext is not available!</div>;
+  }
+  const { theme, toggleTheme } = themeContext;
+
+  const drawerStyles = {
+    width: drawerWidth,
+    flexShrink: 0,
+    "& .MuiDrawer-paper": {
+      width: drawerWidth,
+      boxSizing: "border-box",
+      marginTop: "66px",
+      backgroundColor: theme === "light" ? "#f5f5f5" : "#333",
+      color: theme === "light" ? "#000" : "white",
+    },
+  };
+
+  const appBarStyles = {
+    width: `calc(100% - ${drawerWidth}px)`,
+    ml: `${drawerWidth}px`,
+    backgroundColor: theme === "light" ? "#fff" : "#212121",
+    color: theme === "light" ? "black" : "white",
+  };
+
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      <AppBar
-        position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-      ></AppBar>
-      <Drawer
-        sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          "& .MuiDrawer-paper": {
-            width: drawerWidth,
-            boxSizing: "border-box",
-            marginTop: "66px",
-          },
-        }}
-        variant="permanent"
-        anchor="left"
-      >
+      <AppBar position="fixed" sx={appBarStyles}></AppBar>
+      <Drawer sx={drawerStyles} variant="permanent" anchor="left">
         <Divider />
         <List>
           {["Products", "Categories", "Orders", "Customers"].map(
             (text, index) => (
               <ListItem key={text} disablePadding>
                 <ListItemButton>
-                  <ListItemIcon>
+                  <ListItemIcon
+                    sx={{ color: theme === "light" ? "black" : "white" }}
+                  >
                     {index === 0 ? (
-                      <ShoppingCartIcon />
+                      <ShoppingCartIcon
+                        sx={{ color: theme === "light" ? "black" : "white" }}
+                      />
                     ) : index === 1 ? (
-                      <InventoryIcon />
+                      <InventoryIcon
+                        sx={{ color: theme === "light" ? "black" : "white" }}
+                      />
                     ) : (
-                      <AddIcon />
+                      <AddIcon
+                        sx={{ color: theme === "light" ? "black" : "white" }}
+                      />
                     )}
                   </ListItemIcon>
                   <ListItemText primary={text} />
@@ -84,14 +104,18 @@ export default function Sidebar() {
           <ListItem disablePadding onClick={handleOpen}>
             <ListItemButton>
               <ListItemIcon>
-                <AddIcon />
+                <AddIcon
+                  sx={{ color: theme === "light" ? "black" : "white" }}
+                />
               </ListItemIcon>
               <ListItemText primary="Add New Product" />
             </ListItemButton>
           </ListItem>
           <Box sx={{ display: "flex", flexDirection: "column", gap: "10px" }}>
             <FormControl>
-              <InputLabel>Filter by title</InputLabel>
+              <InputLabel sx={{ color: theme === "light" ? "black" : "white" }}>
+                Filter by title
+              </InputLabel>
               <Input
                 type="text"
                 onChange={handleTitleFilterChange}
@@ -99,7 +123,9 @@ export default function Sidebar() {
               />
             </FormControl>
             <FormControl>
-              <InputLabel>Filter by price</InputLabel>
+              <InputLabel sx={{ color: theme === "light" ? "black" : "white" }}>
+                Filter by price
+              </InputLabel>
               <Input
                 type="text"
                 onChange={handlePriceFilterChange}

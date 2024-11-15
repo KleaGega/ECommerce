@@ -8,17 +8,18 @@ import Checkout from "../component/checkout/Checkout";
 import ProductDetails from "../component/details/Details";
 import Login from "../component/login/Login";
 import SignUp from "../component/signUp/SignUp";
-import Success from "../component/Success";
+import Success from "../component/success/Success";
+import Layout from "../common/layout/Layout";
 const AppRoutes: React.FC = () => {
   const { data } = useFetch();
 
   return (
     <Routes>
-      <Route path="/header" element={<Header />} />
+      <Route path="/homepage" element={<Header />} />
       <Route path="/list_product" element={<ProductList data={data} />} />
       <Route path="/summary" element={<Summary />} />
       <Route path="/checkout" element={<Checkout />} />
-      <Route path="/product/:id" element={<ProductDetails />} />
+      <Route path="/details/:id" element={<ProductDetails />} />
       <Route path="/login" element={<Login />} />
       <Route path="/signUp" element={<SignUp />} />
       <Route path="/success" element={<Success />} />

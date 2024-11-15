@@ -1,17 +1,23 @@
 import { useParams } from "react-router-dom";
-import { useContext } from "react";
-import { CartContext } from "../../context/CartContext";
 import useFetch from "../../hook/useFetch";
-
+import Card from "@mui/material/Card";
+import Box from "@mui/material/Box";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import CardContent from "@mui/material/CardContent";
+import ThemeContext from "../../context/ThemeContext";
+import { useContext } from "react";
 const ProductDetails = () => {
-  const { id } = useParams<{ id: string }>(); // Get the product id from the URL
+  const { id } = useParams<{ id: string }>();
   const { data } = useFetch();
+  const themeContext = useContext(ThemeContext);
 
-  // Handle error state
+  if (!themeContext) {
+    throw new Error("ThemeContext is not available!");
+  }
+  const { theme } = themeContext;
 
-  // Find the product with the matching id from the full data array
-  const product = data?.find((item) => item.id.toString() === id); // Convert item.id to string
-
+  const product = data?.find((item) => item.id.toString() === id);
   if (!product) {
     return (
       <div>
@@ -20,25 +26,37 @@ const ProductDetails = () => {
       </div>
     );
   }
-
-  // Destructure the product properties
-  const { title, description, price, image } = product;
-
   return (
-    <div style={{ padding: "20px", maxWidth: "600px", margin: "0 auto" }}>
-      <h1>{title}</h1>
-      <img
-        src={image}
-        alt={title}
-        style={{ width: "100%", height: "auto", borderRadius: "8px" }}
-      />
-      <p style={{ fontSize: "18px", marginTop: "20px" }}>
-        <strong>Description:</strong> {description}
-      </p>
-      <p style={{ fontSize: "18px", color: "red" }}>
-        <strong>Price:</strong> ${price}
-      </p>
-    </div>
+    <Box
+      sx={{
+        padding: "20px",
+        display: "flex",
+        justifyContent: "center",
+        marginTop: "40px",
+        backgroundColor: theme === "dark" ? "#333" : "#fff",
+        color: theme === "dark" ? "#fff" : "#000",
+      }}
+    >
+      <Card sx={{ maxWidth: 600 }}>
+        <CardMedia
+          component="img"
+          alt={product.title}
+          height="250"
+          image={product.image}
+        />
+        <CardContent>
+          <Typography variant="h5" component="div">
+            {product.title}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" sx={{ mt: 2 }}>
+            <strong>Description:</strong> {product.description}
+          </Typography>
+          <Typography variant="h6" color="error" sx={{ mt: 2 }}>
+            <strong>Price:</strong> ${product.price}
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 };
 

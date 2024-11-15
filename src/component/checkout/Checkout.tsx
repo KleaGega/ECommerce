@@ -6,6 +6,8 @@ import {
   Button,
   Box,
 } from "@mui/material";
+import ThemeContext from "../../context/ThemeContext";
+import { useContext } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 type IFormInput = {
@@ -35,6 +37,13 @@ const Checkout = () => {
   const handleReset = () => {
     reset();
   };
+  const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    throw new Error("ThemeContext is not available!");
+  }
+
+  const { theme } = themeContext;
 
   return (
     <Box
@@ -42,10 +51,17 @@ const Checkout = () => {
         maxWidth: 600,
         margin: "50px auto",
         padding: "20px",
-        backgroundColor: "#f9f9f9",
+        backgroundColor: theme === "dark" ? "#333" : "#f9f9f9", // Background color based on theme
+        color: theme === "dark" ? "#fff" : "#000", // Text color based on theme
         borderRadius: "8px",
-        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+        boxShadow:
+          theme === "dark"
+            ? "0 4px 8px rgba(0, 0, 0, 0.3)"
+            : "0 4px 8px rgba(0, 0, 0, 0.1)", // Adjust shadow based on theme
         marginTop: "85px",
+        width: " 600px",
+        alignIitems: " center",
+        display: "inline-block",
       }}
     >
       <Typography
@@ -68,7 +84,7 @@ const Checkout = () => {
               sx={{
                 padding: "10px",
                 borderRadius: "4px",
-                border: "1px solid #ccc",
+                border: `1px solid ${theme === "dark" ? "#fff" : "#ccc"}`, // Border color based on theme
               }}
             />
             {errors.name && (
@@ -95,7 +111,7 @@ const Checkout = () => {
               sx={{
                 padding: "10px",
                 borderRadius: "4px",
-                border: "1px solid #ccc",
+                border: `1px solid ${theme === "dark" ? "#fff" : "#ccc"}`,
               }}
             />
             {errors.username && (
@@ -128,7 +144,7 @@ const Checkout = () => {
               sx={{
                 padding: "10px",
                 borderRadius: "4px",
-                border: "1px solid #ccc",
+                border: `1px solid ${theme === "dark" ? "#fff" : "#ccc"}`,
               }}
             />
             {errors.email && (
@@ -143,6 +159,7 @@ const Checkout = () => {
               </Typography>
             )}
           </FormControl>
+
           <FormControl
             sx={{ marginBottom: "20px", width: "100%" }}
             error={!!errors.phone}
@@ -160,7 +177,7 @@ const Checkout = () => {
               sx={{
                 padding: "10px",
                 borderRadius: "4px",
-                border: "1px solid #ccc",
+                border: `1px solid ${theme === "dark" ? "#fff" : "#ccc"}`,
               }}
             />
             {errors.phone && (
@@ -175,6 +192,7 @@ const Checkout = () => {
               </Typography>
             )}
           </FormControl>
+
           <Box
             sx={{
               display: "flex",
@@ -189,7 +207,7 @@ const Checkout = () => {
               onClick={() => navigate("/success")}
               sx={{
                 width: "80%",
-                backgroundColor: "#4caf50",
+                backgroundColor: theme === "dark" ? "#4caf50" : "#388e3c", // Button color based on theme
                 color: "white",
                 padding: "12px",
                 borderRadius: "8px",
@@ -197,7 +215,7 @@ const Checkout = () => {
                 fontSize: "16px",
                 textTransform: "none",
                 "&:hover": {
-                  backgroundColor: "#388e3c",
+                  backgroundColor: theme === "dark" ? "#388e3c" : "#4caf50", // Hover effect based on theme
                 },
               }}
             >
@@ -212,13 +230,13 @@ const Checkout = () => {
                 width: "80%",
                 padding: "12px",
                 borderRadius: "8px",
-                border: "1px solid #f44336",
-                color: "#f44336",
+                border: `1px solid ${theme === "dark" ? "#fff" : "#f44336"}`, // Border color based on theme
+                color: theme === "dark" ? "#fff" : "#f44336", // Text color based on theme
                 fontWeight: "bold",
                 fontSize: "16px",
                 textTransform: "none",
                 "&:hover": {
-                  backgroundColor: "#f44336",
+                  backgroundColor: theme === "dark" ? "#f44336" : "#f44336",
                   color: "white",
                 },
               }}

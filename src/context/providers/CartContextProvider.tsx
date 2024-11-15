@@ -1,7 +1,8 @@
 import React, { useState, useEffect, ReactNode, useMemo } from "react";
-import { CartContext, CartItem } from "../../CartContext";
+import { CartContext } from "../CartContext";
+import { CartItem } from "../../interfaces/Product";
 import { useNavigate } from "react-router-dom";
-import useFetch from "../../../hook/useFetch";
+import useFetch from "../../hook/useFetch";
 
 type CartContextProviderProps = {
   children: ReactNode;
@@ -144,6 +145,15 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
     setDescription("");
     setPrice(0);
   };
+  const updateQuantityEdit = (
+    id: string,
+    updates: { title?: string; price?: number }
+  ) => {
+    setCartItems((prevItems) =>
+      prevItems.map((item) => (item.id === id ? { ...item, ...updates } : item))
+    );
+  };
+
   const totalItem = (cartItems: CartItem[]): number => {
     return cartItems.reduce((sum, item) => sum + item.quantity, 0);
   };
@@ -185,6 +195,7 @@ export const CartContextProvider = ({ children }: CartContextProviderProps) => {
         handlePriceFilterChange,
         priceFilter,
         handleDetails,
+        updateQuantityEdit,
       }}
     >
       {children}

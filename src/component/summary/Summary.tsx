@@ -12,7 +12,6 @@ const Summary = () => {
   if (!cartContext) {
     return <div>Error: CartContext is not available!</div>;
   }
-
   const { cartItems, totalItem, totalPrice } = cartContext;
 
   const handleCheckOut = () => {

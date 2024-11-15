@@ -1,4 +1,7 @@
 import * as React from "react";
+import { useContext } from "react";
+import { CartContext } from "../../context/CartContext";
+import ThemeContext from "../../context/ThemeContext";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -6,12 +9,13 @@ import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
-import "../../styles/header.css";
-import { useContext } from "react";
-import { CartContext } from "../../context/CartContext";
+import SunIcon from "@mui/icons-material/WbSunny";
+import MoonIcon from "@mui/icons-material/NightlightRound";
 import { Link } from "react-router-dom";
-
 import Typography from "@mui/material/Typography";
+
+import "../../styles/header.css";
+
 export default function Header() {
   const cartContext = useContext(CartContext);
 
@@ -19,6 +23,11 @@ export default function Header() {
     return <div>Error: CartContext is not available!</div>;
   }
   const { totalQuantity } = cartContext;
+  const themeContext = useContext(ThemeContext);
+  if (!themeContext) {
+    return <div>Error: ThemeContext is not available!</div>;
+  }
+  const { theme, toggleTheme } = themeContext;
 
   return (
     <Box sx={{ flexGrow: 1, width: "100%" }}>
@@ -27,7 +36,7 @@ export default function Header() {
           sx={{
             display: "flex",
             justifyContent: "space-between",
-            backgroundColor: "gray",
+            backgroundColor: theme === "light" ? "gray" : "#333",
           }}
         >
           <IconButton
@@ -78,12 +87,18 @@ export default function Header() {
             </Link>
             <Box sx={{ position: "relative", display: "inline-block" }}>
               <Link to="/summary">
-                <ShoppingCartIcon />
+                <ShoppingCartIcon
+                  sx={{ color: "white", display: "flex", alignItems: "center" }}
+                />
               </Link>
               {totalQuantity > 0 && (
                 <div className="total">{totalQuantity}</div>
               )}
             </Box>
+
+            <IconButton color="inherit" onClick={toggleTheme} sx={{ ml: 2 }}>
+              {theme === "light" ? <MoonIcon /> : <SunIcon />}
+            </IconButton>
           </Box>
         </Toolbar>
       </AppBar>

@@ -1,4 +1,6 @@
 import React, { useContext } from "react";
+import ThemeContext from "../../context/ThemeContext";
+
 import {
   Card,
   CardContent,
@@ -25,14 +27,17 @@ const Item: React.FC<ItemProps> = ({ data }) => {
     throw new Error("CartContext is not available!");
   }
 
+  const themeContext = useContext(ThemeContext);
+
+  if (!themeContext) {
+    throw new Error("ThemeContext is not available!");
+  }
+
+  const { theme } = themeContext;
   const { addToCart, handleDetails } = cartContext;
-
   const handleAddToCart = () => {
-    const itemWithQuantity = { ...data, quantity: 1 };
-    console.log("Adding to cart:", itemWithQuantity);
-    addToCart(itemWithQuantity);
+    addToCart({ ...data, quantity: 1 });
   };
-
   const handleNavigateToDetails = () => {
     handleDetails(data.id);
   };
@@ -46,7 +51,10 @@ const Item: React.FC<ItemProps> = ({ data }) => {
         transition: "transform 0.3s ease",
         display: "flex",
         flexDirection: "column",
+        backgroundColor: theme === "light" ? "#fff" : "#333",
+        color: theme === "light" ? "#000" : "#fff",
         "&:hover": { transform: "translateY(-10px)" },
+        marginBottom: "20px",
       }}
     >
       <CardMedia
@@ -68,6 +76,7 @@ const Item: React.FC<ItemProps> = ({ data }) => {
           alignItems: "center",
           cursor: "pointer",
           "&:hover": { textDecoration: "underline" },
+          color: theme === "light" ? "black" : "white",
         }}
       >
         {data.title}
@@ -82,12 +91,24 @@ const Item: React.FC<ItemProps> = ({ data }) => {
           padding: "16px",
         }}
       >
-        <Typography variant="body1" sx={{ fontWeight: "bold", color: "red" }}>
+        <Typography
+          variant="body1"
+          sx={{
+            fontWeight: "bold",
+            color: theme === "light" ? "red" : "yellow",
+          }}
+        >
           {`$${data.price}`}
         </Typography>
         <Button
           variant="contained"
-          sx={{ color: "primary", backgroundColor: "black" }}
+          sx={{
+            color: theme === "light" ? "white" : "black",
+            backgroundColor: theme === "light" ? "black" : "white",
+            "&:hover": {
+              backgroundColor: theme === "light" ? "gray" : "#444",
+            },
+          }}
           onClick={handleAddToCart}
         >
           Add to Cart

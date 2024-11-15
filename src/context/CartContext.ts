@@ -1,21 +1,5 @@
-import React, { createContext, ReactNode } from "react";
-
-export type CartItem = {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  quantity: number;
-  image: string;
-};
-export type CartNewItem = {
-  id: string;
-  title: string;
-  description: string;
-  price: number;
-  quantity: number;
-  image: string;
-}
+import React, { createContext } from "react";
+import { CartItem } from "../interfaces/Product";
 
 export type CartContextType = {
   cartItems: CartItem[];
@@ -45,6 +29,7 @@ export type CartContextType = {
   priceFilter:number;
   handlePriceFilterChange:(e: React.ChangeEvent<HTMLInputElement>) => void;
   handleDetails:(id:string)=>void
+  updateQuantityEdit: (id: string, updates: { title?: string; price?: number }) => void;
 };
 
 export const CartContext = createContext<CartContextType | undefined>(undefined);
